@@ -29,12 +29,15 @@ def intital_load(mkt,ticker,exchange,price,OI):
 def get_market_static_data():
     return static_table.read('Markets').data
 
-def get_market_list(how='all'):
+def get_market_list(how='live'):
     mkts=static_table.read('Markets').data
     if how=='all':
     	return mkts.index
     else:
-    	return
+    	return ['A', 'AG', 'AL', 'AU', 'B', 'BU', 'C', 'CF', 'CS', 'CU', 'ER', 'FB',
+      'FG', 'GN', 'HC', 'I', 'J', 'JD', 'JM', 'L', 'M', 'MA', 'ME', 'NI', 'P',
+      'PB', 'PP', 'RB', 'RM', 'RO', 'SN', 'SR', 'TA', 'V', 'WH', 'WS', 'WT',
+      'Y','ZN']
 
 def load_market_price(market):
 	return price_table.read(market).data
