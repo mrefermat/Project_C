@@ -76,6 +76,25 @@ def get_quandl_fields(exchange):
            'CFFEX':['Close','Volume','Turnover','Open Interest']}
     return field[exchange]
 
+def _most_liquid_price(mkt):
+    OI = load_market_open_interest(mkt).dropna(how='all')
+    px= load_market_price(mkt).dropna(how='all')
+    s=pd.Series()
+    if px.size != 0:
+        maxContract=OI.idxmax(axis=1)
+        for row in maxContract.iteritems():
+            s[row[0]]=px.ix[row[0]][row[1]]
+    return s
+
+def get_most_liquid_price(mkt):
+    if type(mkt)==str:
+        return _most_liquid_price(mkt)
+    else:
+        dic={}
+        for m in mkt:
+            dic[m]=get_most_liquid_price(m)
+        return pd.DataFrame().from_dict(dic)
+
 def quandl_load_data(market,exchange):
     list_of_months = ['F','G','H','J','K','M','N',
                         'Q','U','V','X','Z']
