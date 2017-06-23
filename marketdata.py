@@ -86,6 +86,9 @@ def _most_liquid_price(mkt):
             s[row[0]]=px.ix[row[0]][row[1]]
     return s
 
+def remove_inf(pnl):
+    return pnl.replace(np.inf,0).replace(-np.inf,0)
+
 def get_most_liquid_price(mkt):
     if type(mkt)==str:
         return _most_liquid_price(mkt)
