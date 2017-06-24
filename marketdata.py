@@ -7,6 +7,7 @@ OI_table = store['CHINA_OI']
 static_table = store['CHINA_STATIC']
 import math
 from datetime import datetime
+import numpy as np
 token="Us3wFmXGgAj_1cUtHAAR"
 
 # Currently returns a Series with just the adjusted price.

@@ -11,10 +11,17 @@ def calc_pnl_wc(position,data,fee=0.0005):
 	mul=get_contract_multipliers()[data.columns]
 	return position*data*mul-cost_model(position,fee)
 
+def calc_pnl_position_wc(position,data,curr_px,fee=0.0005):
+    mul=get_contract_multipliers()[data.columns]
+    return (position*data*mul*curr_px)-cost_model_position(position,curr_px,mul,fee)
+
 def cost_model(pos,fee=0.0005):
 	return (pos.diff().abs()*fee)
 
-def calc_Sharpe(pnl,N=12):
+def cost_model_position(position,curr_px,mul,fee):
+    return position.diff().abs()*(curr_px*mul*fee)
+
+def calc_Sharpe(pnl,N=260):
     return np.sqrt(N) * pnl.mean() / pnl.std()
 
 def ew_portfolio_pnl(pnl):
@@ -34,3 +41,18 @@ def calc_scaling_factor(pnl,vol_target=0.15):
         vol_ach=np.sqrt(np.dot(np.dot(w.T,Sig.as_matrix()),w))*16
         SF.append(vol_target/vol_ach)
     return pd.Series(SF,index=ind)
+
+# Calculate in position space 
+def tsmom_daily_signal(data,signal_lookback,vol_lookback=20):
+    vol=pd.ewmstd(data,vol_lookback,min_periods=vol_lookback)*math.sqrt(256)
+    signal=pd.rolling_mean(data,signal_lookback)
+    signal = signal /abs(signal)
+    return (signal / (vol))
+
+def calc_position(signal,FundAUM,scaling_factor,curr_px):
+    mul=get_contract_multipliers()[signal.columns]
+    w=(1/signal.dropna(how='all').count(axis=1))
+    dict={}
+    for m in signal.columns:
+        dict[m]=(signal[m]*FundAUM*w*scaling_factor)/(curr_px[m]*mul[m]).dropna()
+    return pd.DataFrame().from_dict(dict).round()
