@@ -42,13 +42,6 @@ def calc_scaling_factor(pnl,vol_target=0.15):
         SF.append(vol_target/vol_ach)
     return pd.Series(SF,index=ind)
 
-# Calculate in position space 
-def tsmom_daily_signal(data,signal_lookback,vol_lookback=20):
-    vol=pd.ewmstd(data,vol_lookback,min_periods=vol_lookback)*math.sqrt(256)
-    signal=pd.rolling_mean(data,signal_lookback)
-    signal = signal /abs(signal)
-    return (signal / (vol))
-
 def calc_position(signal,FundAUM,scaling_factor,curr_px):
     mul=get_contract_multipliers()[signal.columns]
     w=(1/signal.dropna(how='all').count(axis=1))
