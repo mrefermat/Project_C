@@ -23,9 +23,9 @@ def compare(last,this):
     else:
         return last
 
-def intital_load(mkt,ticker,exchange,price,OI):
-	price_table.write(mkt, price, metadata={'ticker': ticker,'exchange':exchange})
-	OI_table.write(mkt, OI, metadata={'ticker': ticker,'exchange':exchange})
+def intital_load(mkt,price,OI):
+	price_table.write(mkt, price)
+	OI_table.write(mkt, OI)
 
 def get_market_static_data():
     return static_table.read('Markets').data
