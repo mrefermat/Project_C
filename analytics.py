@@ -29,7 +29,7 @@ def ew_portfolio_pnl(pnl):
 	return x.divide(x.count(axis=1),axis=0).sum(axis=1)
 
 # Has a bit of hindsight bias involved since it uses entire time for Covariance matrix
-def calc_scaling_factor(pnl,vol_target=0.15):
+def calc_scaling_factor(pnl,vol_target=0.2):
     Sigma_all=pnl.cov().dropna(how='all',axis=1).dropna(how='all')
     ind=pnl.dropna(how='all').index
     SF=[]

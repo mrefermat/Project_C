@@ -53,13 +53,14 @@ def get_contract_multipliers():
 def adjusted_returns(price,volume):
     rtn=price.pct_change()
     ww=volume.apply(lambda s: s.nlargest(2).index.tolist(), axis=1)
-    s=ww.copy()
+    s=pd.Series()
     mon='A00'
     spread=0
     for ind, val in ww.iteritems():
         mon=compare(mon,val[0])
-        s.ix[ind]=rtn[val[0]].ix[ind]
-    return s
+        if ind in rtn.index:
+            s.ix[ind]=rtn[val[0]].ix[ind]
+    return s.dropna()
 
 # To impliment 
 def update_data():
@@ -84,7 +85,10 @@ def _most_liquid_price(mkt):
     if px.size != 0:
         maxContract=OI.idxmax(axis=1)
         for row in maxContract.iteritems():
-            s[row[0]]=px.ix[row[0]][row[1]]
+            try:
+                s[row[0]]=px.ix[row[0]][row[1]]
+            except:
+                continue
     return s
 
 def remove_inf(pnl):
