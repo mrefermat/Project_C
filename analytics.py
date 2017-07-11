@@ -49,3 +49,20 @@ def calc_position(signal,FundAUM,scaling_factor,curr_px):
     for m in signal.columns:
         dict[m]=(signal[m]*FundAUM*w*scaling_factor)/(curr_px[m]*mul[m]).dropna()
     return pd.DataFrame().from_dict(dict).round()
+
+def calc_net_performance(gross_pnl,management_fee,performance_fee):
+    track=gross_pnl-management_fee/12.
+    s = pd.Series()
+    hwm=1
+    curr=1
+    for t,perf in track.iteritems():
+        perf=perf+1
+        if hwm<curr*perf:
+            perf = ((perf-1)*(1-performance_fee))+1
+            hwm=curr*perf
+        curr=curr*perf
+        s[t] =curr
+    return s
+
+
+
