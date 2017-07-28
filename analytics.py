@@ -50,7 +50,14 @@ def calc_position(signal,FundAUM,scaling_factor,curr_px):
         dict[m]=(signal[m]*FundAUM*w*scaling_factor)/(curr_px[m]*mul[m]).dropna()
     return pd.DataFrame().from_dict(dict).round()
 
+def add_cash_returns(gross_pnl,percentage=.8,tenor='1M'):
+    cash_rets=pd.DataFrame(index=gross_pnl.index)
+    cash_rets[tenor]=pd.read_csv('Shibor.csv',parse_dates=['Date'],index_col=0)[tenor].resample(rule='m')/100.
+    s=cash_rets[tenor].fillna(0.025)
+    return (gross_pnl+s/12.*percentage).dropna()
+
 def calc_net_performance(gross_pnl,management_fee,performance_fee):
+    gross_with_cash = add_cash_returns(gross_pnl)
     track=gross_pnl-management_fee/12.
     s = pd.Series()
     hwm=1
