@@ -71,5 +71,16 @@ def calc_net_performance(gross_pnl,management_fee,performance_fee):
         s[t] =curr
     return s
 
+def max_drawdown(price):
+    return ((1-price/pd.rolling_max(price,100000,min_periods=1)).max()*100).round(2)
 
+def volatility(price):
+    return (price.pct_change().std()*math.sqrt(12)*100).round(2)
 
+def total_return(indices):
+    s=pd.Series()
+    for c in indices.columns:
+        t=indices[c].dropna()
+        tp=t/t.ix[0]
+        s[c]=((tp.ix[-1]-1)*100).round(2)
+    return s
