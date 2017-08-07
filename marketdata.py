@@ -35,10 +35,10 @@ def get_market_list(how='live'):
     if how=='all':
     	return mkts.index
     else:
-    	return ['A', 'AG', 'AL', 'AU', 'B', 'BU', 'C', 'CF', 'CS', 'CU', 'ER', 'FB',
-      'FG', 'GN', 'HC', 'I', 'J', 'JD', 'JM', 'L', 'M', 'MA', 'ME', 'NI', 'P',
-      'PB', 'PP', 'RB', 'RM', 'RO', 'SN', 'SR', 'TA', 'V', 'WH', 'WS', 'WT',
-      'Y','ZN']
+    	return ['A', 'AG', 'AL', 'AU', 'B', 'BU', 'C', 'CF', 'CS', 'CU', 'ER', 
+      'FG', 'GN', 'HC', 'I', 'J', 'L', 'M', 'MA', 'ME', 'NI', 'P',
+      'PB', 'PP', 'RB', 'RM', 'RO', 'SN', 'SR', 'TA', 'V', 'WS', 'WT']
+      #'Y','WH','ZN','JM','FB','JD']
 
 def load_market_price(market):
 	return price_table.read(market).data
