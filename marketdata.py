@@ -14,6 +14,7 @@ token="Us3wFmXGgAj_1cUtHAAR"
 # We could think about adding the 'adjusted' or total volume
 def get_timeseries(market):
 	price=load_market_price(market)
+    price=price.replace(0, np.nan).ffill()
 	volume=load_market_open_interest(market)
 	return adjusted_returns(price,volume).dropna().astype(dtype='float')
 
@@ -35,10 +36,10 @@ def get_market_list(how='live'):
     if how=='all':
     	return mkts.index
     else:
-    	return ['A', 'AG', 'AL', 'AU', 'B', 'BU', 'C', 'CF', 'CS', 'CU', 'ER', 
-      'FG', 'GN', 'HC', 'I', 'J', 'L', 'M', 'MA', 'ME', 'NI', 'P',
-      'PB', 'PP', 'RB', 'RM', 'RO', 'SN', 'SR', 'TA', 'V', 'WS', 'WT']
-      #'Y','WH','ZN','JM','FB','JD']
+    	return ['A', 'AG', 'AL', 'AU', 'B', 'BU', 'C', 'CF', 'CS', 'CU',  
+      'FG',  'HC', 'I', 'J', 'L', 'M', 'MA', 'NI', 'P',
+      'PB', 'PP', 'RB', 'RM', 'SN', 'SR', 'TA', 'V',  ]
+      #'Y','GN','WH','ZN','JM','FB','JD','ER','WT,'ME','RO','WS']
 
 def load_market_price(market):
 	return price_table.read(market).data
@@ -112,12 +113,13 @@ def quandl_load_data(market,exchange):
     ticker = exchange + '/' + market
     ddf={}
     mini_list = list(list_of_months)
-    for y in range(2018,2000,-1):
+    for y in range(2019,2000,-1):
         for m in mini_list:
             try:
                 ddf[m + str(y)[2:]]=quandl.get(ticker + m + str(y),authtoken=token)[fields]
             except:
-                mini_list.remove(m)
+                if y != 2019:
+                    mini_list.remove(m)
                 print 'Missing '+m + ' '+ str(y)
     ix = pd.DatetimeIndex(start=datetime(2000, 1, 1), end=datetime(2018, 12, 31), freq='D')
     price=pd.DataFrame(index=ix)
@@ -132,3 +134,7 @@ def quandl_load_data(market,exchange):
             OI[k]=ddf[k]['O.I.']
     OI=OI.dropna(how='all')
     return price,OI
+
+def get_traded_contract(mkt):
+    OI=load_market_open_interest(mkt).dropna(how='all')
+    return OI.idxmax(axis=1).tail(1).ix[0]

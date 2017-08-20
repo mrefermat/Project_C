@@ -43,7 +43,6 @@ def ewma_mom_daily_signal(data,short_lookback,long_lookback,vol_lookback=20):
 def calc_zscore(signal,lookback):
     return (signal/pd.ewmstd(signal,lookback,min_periods=lookback*2))
 
-
 # Equal weight of two lookbacks. Internal method for faster execution
 # since get current prices take a while to run
 def _get_positions_two_lookbacks(sh,lg,mkts,df,FundAUM,curr_px):

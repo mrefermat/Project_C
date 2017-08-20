@@ -10,11 +10,23 @@ static_table = store['CHINA_STATIC']
 token="Us3wFmXGgAj_1cUtHAAR"
 
 # Load data from quandl
-mkts=static_table.read('Markets').data
-list_of_months = ['F','G','H','J','K','M','N','Q','U','V','X','Z']
+update_data()
 
-for exchange in mkts.exchange.unique():
-    list_of_markets=mkts[mkts.exchange==exchange].index
-    for mkt in list_of_markets:
-        price, OI = quandl_load_data(mkt,exchange)
-        intital_load(mkt,price,OI)
+# Run signals
+FundAUM=1e9
+mkts=get_market_list()
+df=pd.DataFrame()
+for m in mkts:
+    try:
+        df[m]=get_timeseries(m)
+    except:
+        print m
+
+lots=calc_positions_two_lookbacks(10,80,mkts,df,FundAUM).dropna(how='all')
+lots.ix[lots.index[-1]].plot(kind='bar',title='Current Positions')
+
+
+
+
+
+
