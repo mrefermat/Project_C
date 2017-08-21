@@ -12,11 +12,12 @@ token="Us3wFmXGgAj_1cUtHAAR"
 
 # Currently returns a Series with just the adjusted price.
 # We could think about adding the 'adjusted' or total volume
+
 def get_timeseries(market):
-	price=load_market_price(market)
+    price=load_market_price(market)
     price=price.replace(0, np.nan).ffill()
-	volume=load_market_open_interest(market)
-	return adjusted_returns(price,volume).dropna().astype(dtype='float')
+    volume=load_market_open_interest(market)
+    return adjusted_returns(price,volume).dropna().astype(dtype='float')
 
 def compare(last,this):
     if this[1:]>last[1:] or this[0] > last[0]:
@@ -36,9 +37,10 @@ def get_market_list(how='live'):
     if how=='all':
     	return mkts.index
     else:
-    	return ['A', 'AG', 'AL', 'AU', 'B', 'BU', 'C', 'CF', 'CS', 'CU',  
+    	return ['A', 'AG', 'AL', 'AU', 'BU', 'C', 'CF', 'CS', 'CU',  
       'FG',  'HC', 'I', 'J', 'L', 'M', 'MA', 'NI', 'P',
       'PB', 'PP', 'RB', 'RM', 'SN', 'SR', 'TA', 'V',  ]
+      # Not enough liquidity: 'B'
       #'Y','GN','WH','ZN','JM','FB','JD','ER','WT,'ME','RO','WS']
 
 def load_market_price(market):
