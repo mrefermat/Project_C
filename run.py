@@ -2,6 +2,7 @@ import quandl
 import pandas as pd
 import numpy as np
 from marketdata import *
+from trading import *
 from datetime import datetime
 from arctic import Arctic
 
@@ -13,7 +14,7 @@ token="Us3wFmXGgAj_1cUtHAAR"
 update_data()
 
 # Run signals
-FundAUM=1e9
+FundAUM=30e6
 mkts=get_market_list()
 df=pd.DataFrame()
 for m in mkts:
@@ -21,12 +22,14 @@ for m in mkts:
         df[m]=get_timeseries(m)
     except:
         print m
+df=df.ffilna(0)
 
 lots=calc_positions_two_lookbacks(10,80,mkts,df,FundAUM).dropna(how='all')
 lots.ix[lots.index[-1]].plot(kind='bar',title='Current Positions')
 
+generate_trades(lots)
 
-
+switch_contracts(lots)
 
 
 

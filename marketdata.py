@@ -17,7 +17,7 @@ def get_timeseries(market):
     price=load_market_price(market)
     price=price.replace(0, np.nan).ffill()
     volume=load_market_open_interest(market)
-    return adjusted_returns(price,volume).dropna().astype(dtype='float')
+    return adjusted_returns(price,volume).dropna().astype(dtype='float').fillna(0)
 
 def compare(last,this):
     if this[1:]>last[1:] or this[0] > last[0]:
