@@ -39,7 +39,7 @@ def get_market_list(how='live'):
     else:
     	return ['A', 'AG', 'AL', 'AU', 'BU', 'C', 'CF', 'CS', 'CU',  
       'FG',  'HC', 'I', 'J', 'L', 'M', 'MA', 'NI', 'P',
-      'PB', 'PP', 'RB', 'RM', 'SN', 'SR', 'TA', 'V',  ]
+      'PB', 'PP', 'RB', 'RM', 'SR', 'TA', 'V', 'SN' ]
       # Not enough liquidity: 'B'
       #'Y','GN','WH','ZN','JM','FB','JD','ER','WT,'ME','RO','WS']
 
@@ -92,7 +92,7 @@ def _most_liquid_price(mkt):
                 s[row[0]]=px.ix[row[0]][row[1]]
             except:
                 continue
-    return s
+    return s.replace(0)
 
 def remove_inf(pnl):
     return pnl.replace(np.inf,0).replace(-np.inf,0)
@@ -122,7 +122,7 @@ def quandl_load_data(market,exchange):
             except:
                 if y != 2019:
                     mini_list.remove(m)
-                print 'Missing '+m + ' '+ str(y)
+                print 'Missing '+m + ' '+ str(y) + ' for market '+ market
     ix = pd.DatetimeIndex(start=datetime(2000, 1, 1), end=datetime(2018, 12, 31), freq='D')
     price=pd.DataFrame(index=ix)
     for k in ddf.keys():
