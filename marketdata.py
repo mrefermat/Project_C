@@ -69,10 +69,10 @@ def adjusted_returns(price,volume):
 def update_data():
     mkts=static_table.read('Markets').data
     for exchange in mkts.exchange.unique():
-    list_of_markets=mkts[mkts.exchange==exchange].index
-    for mkt in list_of_markets:
-        price, OI = quandl_load_data(mkt,exchange)
-        intital_load(mkt,price,OI)
+        list_of_markets=mkts[mkts.exchange==exchange].index
+        for mkt in list_of_markets:
+            price, OI = quandl_load_data(mkt,exchange)
+            intital_load(mkt,price,OI)
 
 def get_quandl_fields(exchange):
     field ={'DCE':['Close','Volume','Turnover','Open Interest'],
