@@ -28,3 +28,19 @@ def generate_trades(lots,curr_px):
 		else:
 			msg=msg+ 'SELL: ' + str(trades[mkt]) + ' of ' + mkt + ' '+ contract +' at '+ str(curr_px.ix[-1][mkt])+'\n'
 	return msg
+
+def set_FUM(fum):
+    FUM_table=store['FUM']
+    f=pd.Series(fum,index=['FUM'])
+    FUM.write('FUM',f)
+
+def get_FUM():
+    FUM=store['FUM']
+    return FUM.read('FUM').data.FUM
+
+def get_current_position():
+    position=store['POSITION']
+    return position.read('Current').data
+    
+
+    

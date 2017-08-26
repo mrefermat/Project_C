@@ -16,7 +16,7 @@ token="Us3wFmXGgAj_1cUtHAAR"
 update_data()
 
 # Load data
-FundAUM=30e6
+FundAUM=get_FUM()
 mkts=get_market_list()
 curr_px=get_most_liquid_price(mkts)
 df=pd.DataFrame()
