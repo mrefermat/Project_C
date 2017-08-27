@@ -140,3 +140,9 @@ def quandl_load_data(market,exchange):
 def get_traded_contract(mkt):
     OI=load_market_open_interest(mkt).dropna(how='all')
     return OI.idxmax(axis=1).tail(1).ix[0]
+
+
+
+
+
+
