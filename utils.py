@@ -1,6 +1,6 @@
 def send_email(recipient, subject, body):
     import smtplib
-    file = open('secret.pass','r')
+    file = open('../secret.pass','r')
     user, pwd, d = file.read().split('\n')
     file.close()
 

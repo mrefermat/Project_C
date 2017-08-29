@@ -22,17 +22,17 @@ def generate_trades(lots,curr_px):
 		contract = get_traded_contract(mkt)
 		td =int(trades[mkt]) 
 		if  td >0:
-			msg=msg+ 'BUY: ' + str(trades[mkt]) + ' of ' + mkt + ' '+ contract +' at '+ str(curr_px.ix[-1][mkt]) +'\n'
+			msg=msg+ 'BUY: ' + str(int(trades[mkt])) + ' of ' + mkt + ' '+ contract +' at '+ str(curr_px.ix[-1][mkt]) +'\n'
 		elif td==0:
 			continue
 		else:
-			msg=msg+ 'SELL: ' + str(trades[mkt]) + ' of ' + mkt + ' '+ contract +' at '+ str(curr_px.ix[-1][mkt])+'\n'
+			msg=msg+ 'SELL: ' + str(int(trades[mkt])) + ' of ' + mkt + ' '+ contract +' at '+ str(curr_px.ix[-1][mkt])+'\n'
 	return msg
 
 def set_FUM(fum):
     FUM_table=store['FUM']
     f=pd.Series(fum,index=['FUM'])
-    FUM.write('FUM',f)
+    FUM_table.write('FUM',f)
 
 def get_FUM():
     FUM=store['FUM']
