@@ -1,6 +1,9 @@
 def send_email(recipient, subject, body):
     import smtplib
-    file = open('../secret.pass','r')
+    try:
+        file = open('../secret.pass','r')
+    except:
+        file = open('/home/ubuntu/git/secret.pass','r')
     user, pwd, d = file.read().split('\n')
     file.close()
 
