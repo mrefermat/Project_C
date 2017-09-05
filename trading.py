@@ -1,6 +1,5 @@
 from marketdata import *
 
-
 def switch_contracts(lots):
     msg =""    
     for mkt in lots.columns:
@@ -17,7 +16,7 @@ def switch_contracts(lots):
 
 def generate_trades(lots,curr_px):
 	msg=''
-	trades=lots.diff().ix[lots.index[-1]].dropna()
+	trades=_calculated_new_trades(lots.ix[-1])
 	for mkt in trades.index:
 		contract = get_traded_contract(mkt)
 		td =int(trades[mkt]) 
@@ -42,5 +41,14 @@ def get_current_position():
     position=store['POSITION']
     return position.read('Current').data
     
+def set_position(lots):
+    position=store['POSITION']
+    position.write('Current',lots)
 
+def _calculated_new_trades(new_position):
+    old_position=get_current_position()
+    trades=new_position-old_position
+    set_position(new_position)
+    return trades
+    
     
