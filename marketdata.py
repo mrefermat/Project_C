@@ -115,7 +115,7 @@ def quandl_load_data(market,exchange):
     ticker = exchange + '/' + market
     ddf={}
     mini_list = list(list_of_months)
-    for y in range(2019,2000,-1):
+    for y in range(2018,2000,-1):
         for m in mini_list:
             try:
                 ddf[m + str(y)[2:]]=quandl.get(ticker + m + str(y),authtoken=token)[fields]

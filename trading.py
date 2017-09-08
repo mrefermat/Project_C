@@ -45,7 +45,14 @@ def set_position(lots):
     position=store['POSITION']
     position.write('Current',lots)
 
+def reset_position(lots):
+    pos=get_current_position()
+    for p in pos.index:
+        pos[p]=0
+    set_position(pos)
+
 def _calculated_new_trades(new_position):
+    new_position=new_position.replace(np.nan,0)
     old_position=get_current_position()
     trades=new_position-old_position
     set_position(new_position)
