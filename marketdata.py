@@ -120,7 +120,7 @@ def quandl_load_data(market,exchange):
             try:
                 ddf[m + str(y)[2:]]=quandl.get(ticker + m + str(y),authtoken=token)[fields]
             except:
-                if y != 2019:
+                if y != 2018:
                     mini_list.remove(m)
                 print 'Missing '+m + ' '+ str(y) + ' for market '+ market
     ix = pd.DatetimeIndex(start=datetime(2000, 1, 1), end=datetime(2018, 12, 31), freq='D')
