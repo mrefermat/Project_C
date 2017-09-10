@@ -43,4 +43,4 @@ msg=generate_trades(lots,curr_px)
 msg=msg+'\n============SWITCH=================='
 msg=msg+switch_contracts(lots)
 
-send_email(['mark.refermat@gmail.com,chen.wen@outlook.com'],'Trades for today',msg)
+send_email(['mark.refermat@gmail.com','chen.wen@outlook.com'],'Trades for today',msg)
