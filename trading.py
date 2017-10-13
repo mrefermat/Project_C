@@ -1,4 +1,5 @@
 from marketdata import *
+import datetime as dt
 
 def switch_contracts(lots):
     msg =""    
@@ -37,25 +38,26 @@ def get_FUM():
     FUM=store['FUM']
     return FUM.read('FUM').data.FUM
 
-def get_current_position():
+def get_current_position(new_position):
     position=store['POSITION']
-    return position.read('Current').data
+    try:
+        return position.read('Current').data
+    except:
+        position_history=pd.DataFrame(index=new_position.index)
+        position_history[dt.date(2000,1,1)]=0
+        return position_history
     
-def set_position(lots):
+def set_position(data):
     position=store['POSITION']
-    position.write('Current',lots)
-
-def reset_position(lots):
-    pos=get_current_position()
-    for p in pos.index:
-        pos[p]=0
-    set_position(pos)
+    position.delete('Current')
+    position.write('Current',data)
 
 def _calculated_new_trades(new_position):
     new_position=new_position.replace(np.nan,0)
-    old_position=get_current_position()
-    trades=new_position-old_position
-    set_position(new_position)
+    position_history=get_current_position(new_position)
+    position_history[dt.date.today()]=new_position
+    trades=position_history.T.ix[-1]-position_history.T.ix[-2]
+    set_position(position_history)
     return trades
     
     

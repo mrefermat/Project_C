@@ -42,5 +42,6 @@ lots=calc_position(s_combined,FundAUM,scaling_factor,curr_px)
 msg=generate_trades(lots,curr_px)
 msg=msg+'\n============SWITCH=================='
 msg=msg+switch_contracts(lots)
+print msg
 
 send_email(['mark.refermat@gmail.com','chen.wen@outlook.com'],'Trades for today',msg)
